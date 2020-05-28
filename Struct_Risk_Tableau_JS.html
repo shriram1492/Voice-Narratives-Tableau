@@ -1,0 +1,110 @@
+ 
+<html>
+<head>
+  <title>STRUCTURAL RISK DASHBOARD</title>
+	<script src="https://public.tableausoftware.com/javascripts/api/tableau-2.min.js " type="text/javascript"></script> 
+	<script src="responsivevoice.js"></script> <!-- Voice Response -->
+        <script src="annyang.min.js"></script> <!-- Voice Recognition -->
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</style>
+
+</head>
+<body onload=initializeViz();>
+
+<h1><center><font face="calibri,sans-serif" color="#0110">STRUCTURAL RISK DASHBOARD</center></h1>
+<div Style="position:absolute;30px; right: 80px; height: 100px; width: 400px;">
+
+
+<h3><i>Provide the voice commands listed with "" to get a narrative for the following topics,
+</br>
+</br>1. "Objective" -<font color="#fcca46"> To get a basic report description </font>
+</br>
+</br>2. "Risk Components" -<font color="#fcca46"> To provide input parameters and to view underlying risk components </font>
+</br>
+</br>3. "View Suppliers" -<font color="#fcca46"> To view supplier longlist corresponding to the input parameters provided </font>
+</br>
+</br>4. "Insights" -<font color="#fcca46"> To get insights from the report </font>
+</br>
+</br>5. "Export as PDF" -<font color="#fcca46"> To export as PDF report </font>
+</br>
+</br>
+</br>
+</br>
+
+</h3>
+</div>
+
+<!-- <input type="button" name="test1" Value="Objective" onclick="selectobj();" />  
+<input type="Button" id="Risk_comp" onclick="selectRC()" value="View Risk components"></input> 
+<input type="Button" id="Supp_LL" onclick="Supp_LL()" value="View Supplier Longlist"></input> 
+<input type="Button" id="ABC_INS" onclick="Insight()" value="INSIGHTS"></input>
+<input type="Button" id="pdf" onclick="exportPDF()" value="Export to PDF"></input> -->
+</div>
+
+<script>
+
+if (annyang) {
+  // These are the voice commands in quotes followed by the function
+  var commands = {
+
+'Objective': function() { selectobj(); },
+'View Suppliers': function() { Supp_LL(); },
+'Risk Components': function() { selectRC(); },
+'Dashboard insights': function() { Insight(); },
+'Export as PDF': function() { exportPDF(); },
+
+ };
+  
+  // Add commands to annyang
+  annyang.addCommands(commands);
+  
+  // Start listening.
+  annyang.start();
+}
+
+var viz, workbook, activeSheet, Worksheet, worksheet;
+
+function selectobj() {
+responsiveVoice.speak('Welcome. This dashboard is used in the procurement process, to analyze the Structural Risk associated with all suppliers. Structural Risk comprises of 2 major components, Country level Risk and Pestle Risk. Use the voice command "risk components" to get started with the analysis')
+}
+
+function Supp_LL() {
+workbook.activateSheetAsync("SUPPLIER LONGLIST"); responsiveVoice.speak('ABC Limited, LDA private limited and CDA are the suppliers corresponding to the Input parameters provided. Click on Structural Risk Pie chart to view the underlying components')	
+}  
+
+
+function selectRC() {	workbook.activateSheetAsync("Input Sheet");	responsiveVoice.speak('Provide the input parameters and use the voice command Supplier Longlist to proceed further')	}
+
+function Insight() {
+    workbook.activateSheetAsync("STRUCTURAL RISK");	responsiveVoice.speak('We can observe that Legal Risk associated with this supplier is the highest, followed by Socio Economic risk and business risk. To download the report as PDF, use the voice command Export as PDF') }
+
+
+function initializeViz(){
+
+var placeholderDiv = document.getElementById("tableauViz");
+
+src = "https://public.tableau.com/views/27062018_StructuralRisk_Tableau_JS/Framework?:display_count=y&publish=yes&:origin=viz_share_link";
+
+var options = {
+   hideTabs: true,
+   hideToolbar: true,
+  onFirstInteractive: function () {  workbook = viz.getWorkbook();   activeSheet = workbook.getActiveSheet(); }
+
+};
+
+ viz = new tableauSoftware.Viz(placeholderDiv, src, options);
+
+}
+ 
+
+function exportPDF() {
+  viz.showExportPDFDialog();
+} 
+
+</script>
+
+</body>
+</html>
+ 
+	
